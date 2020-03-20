@@ -1,0 +1,12 @@
+cocosbcx:
+  node: # cocosbcx node settings
+    host: 127.0.0.1 # node host
+    port: 41346 # node rpc port
+    use_ssl: false # use ssl or not
+
+mysql:
+  host: 127.0.0.1 # mysql host
+  port: 33060 # mysql port
+  username: root # mysql username
+  password: cocosbcx # mysql password 
+  database: bcx_wit_votes # mysql database

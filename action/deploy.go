@@ -1,0 +1,5 @@
+package action
+
+func DeploySmartContract() {
+
+}
