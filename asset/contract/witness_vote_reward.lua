@@ -6,7 +6,7 @@ local _calculate_reward_plan
 -- constants
 local asset_symbol='COCOS'
 
-local function init(vote_id)
+function init(vote_id)
     assert(chainhelper:is_owner(),'Must be the owner to be priviledged for init action')
 
     -- read public data
@@ -29,8 +29,9 @@ local function init(vote_id)
 end
 
 -- op_item: block_num/trx_id/voter/votee/amount/asset/timestamp
-local function add_vote_op_item(op_item)
+function add_vote_op_item(op_json)
     assert(chainhelper:is_owner(),'Must be the owner to be priviledged for add action')
+    op_item=cjson.decode(op_json)
 
     -- read public data
     read_list={public_data={is_init=true,is_locked=true,is_cached=true,_vote_id=true,_vote_op_items=true}}
@@ -39,6 +40,7 @@ local function add_vote_op_item(op_item)
     -- check validitity
     assert(public_data.is_init==true,'This contract has not been initized yet')
     assert(public_data.is_locked==false,'This contract has already been locked')
+    assert(op_item,'Invalid vote operation json data')
     assert(op_item.votee==public_data._vote_id, 'Invalid vote operation (wrong vote id)')
 
     -- prepare voter op items
@@ -61,7 +63,7 @@ local function add_vote_op_item(op_item)
     chainhelper:write_chain()
 end
 
-local function peek_reward_plan()
+function peek_reward_plan()
     -- read public data
     read_list={public_data={is_init=true,is_cached=true,_vote_op_items=true,_reward_plans=true}}
     chainhelper:read_chain()
@@ -74,6 +76,7 @@ local function peek_reward_plan()
     local vote_op_items=public_data._vote_op_items
     if (not public_data.is_cached) then
         reward_plan=_calculate_reward_plan(vote_op_items)
+        public_data._reward_plans=reward_plan
         public_data.is_cached=true
 
         -- write reward plans to chain
@@ -103,6 +106,7 @@ function settle_pay_reward(reward_bonus)
     local vote_op_items=public_data._vote_op_items
     if (not public_data.is_cached) then
         reward_plan=_calculate_reward_plan(vote_op_items)
+        public_data._reward_plans=reward_plan
         public_data.is_cached=true
     end
 
