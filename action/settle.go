@@ -1,5 +1,0 @@
-package action
-
-func SettleReward() {
-
-}
