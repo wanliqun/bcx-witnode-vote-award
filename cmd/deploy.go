@@ -17,9 +17,13 @@ package cmd
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/spf13/cobra"
+	"github.com/wanliqun/bcx-witnode-vote-award/action"
 )
+
+var contractName, contractPath string
 
 // deployCmd represents the deploy command
 var deployCmd = &cobra.Command{
@@ -33,6 +37,13 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("deploy called")
+
+		err := action.InitBCXWallet()
+		if err != nil {
+			fmt.Printf("bcx wallet initialized error: %v\n", err.Error())	
+		} else {
+			action.DeploySmartContract(contractName, contractPath)
+		}
 	},
 }
 
@@ -48,4 +59,10 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// deployCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	t := time.Now()
+	defaultContractName := fmt.Sprintf("contract.witvote-reward-%v", t.Unix())
+	deployCmd.Flags().StringVarP(&contractName, "contract-name", "n", defaultContractName, "Deploy contract name")
+
+	deployCmd.Flags().StringVarP(&contractPath, "contract-path", "p", "./asset/contract/witness_vote_reward.lua", "Deploy lua contract file path")
 }

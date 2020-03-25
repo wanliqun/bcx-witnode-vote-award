@@ -63,15 +63,23 @@ func InitDB() {
 	}
 }
 
-func GetSyncHeight() int {
-	var syncHeight int = 0
-    r, err := dbConn.Execute(`select sync_block_height from bootstrap_params where id = 1`)
-    if err != nil {
-		log.Printf("Get sync height error: %v", err)
-		return syncHeight
-    }
+func InitBCXWallet() error {
+	path := viper.GetString("cocosbcx.wallet.wallet_path")
+	password := viper.GetString("cocosbcx.wallet.wallet_pwd")
+	prikey := viper.GetString("cocosbcx.wallet.wif_prk")
+	bcxAccount := viper.GetString("cocosbcx.wallet.bcx_account")
 
-	height, _ := r.GetIntByName(0, "sync_height")
-	syncHeight = int(height)
-	return syncHeight
+	err := sdk.Wallet.LoadWallet(path)
+	if err != nil {
+		err = sdk.Wallet.AddAccountByPrivateKey(prikey, password)
+		if err == nil {
+			sdk.Wallet.SaveAs(path)
+		}
+	}
+
+	if err == nil {
+		return sdk.Wallet.SetDefaultAccount(bcxAccount, password)
+	}
+
+	return err
 }

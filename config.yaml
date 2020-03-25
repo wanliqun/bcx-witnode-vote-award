@@ -4,6 +4,12 @@ cocosbcx:
     port: 41346 # node rpc port
     use_ssl: false # use ssl or not
 
+  wallet: # sdk wallet settings
+    wallet_path: ./wallet.dat # wallet load/save path
+    wallet_pwd: CocosBCX is awesome! # wallet password
+    wif_prk: 5JHdMwsWkEXsMozFrQAQKnKwo44CaV77H45S9PsH7QVbFQngJfw # wif private key
+    bcx_account: kokko # use bcx account
+    
 mysql:
   host: 127.0.0.1 # mysql host
   port: 33060 # mysql port
