@@ -138,7 +138,8 @@ end
 
 ### 8. 发放奖励
 
-可通过智能合约的 settle_pay_reward 方法来进行最终的奖励发放，它将计算奖励分配比例（如有必要参考peek_reward_plan 方法），并将指定数量的 token 按照相应比例进行转账到每个投票账号中。
+可通过智能合约的 settle_pay_reward 方法来进行最终的奖励发放，它将计算奖励分配比例（如有必要的话，参考peek_reward_plan），并将指定数量的 token 按照相应比例进行转账到每个投票账号中，其中调用参数说明如下：
+- reward_bonus - 设置奖励的COCOS数量，精度为10^5
 
 ```lua
 function settle_pay_reward(reward_bonus)
