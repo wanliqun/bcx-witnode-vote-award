@@ -1,6 +1,6 @@
 # bcx-witnode-vote-award
 
-bcx-witnode-vote-award（CocosBCX witness node vote award）是一个出块节点投票奖励发放工具。
+bcx-witnode-vote-award（CocosBCX witness node vote award）是一个出块竞选节点投票奖励发放工具。
 
 ## 一、功能介绍
 
